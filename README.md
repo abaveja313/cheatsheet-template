@@ -15,8 +15,8 @@ A customizable LaTeX package for creating compact, well-formatted cheat sheets f
 
 1. Create a new project in Overleaf
 2. Create a new file named `cheatsheet.sty`
-3. Copy the package code into this file
-4. Create your `main.tex` file to use the package
+3. Copy the [template](cheatsheet.sty) into this file
+4. Create your `main.tex` file to use the package. Use the provided one as an example.
 
 ## Basic Usage
 
