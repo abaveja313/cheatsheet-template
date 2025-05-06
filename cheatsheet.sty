@@ -1,0 +1,151 @@
+% cheatsheet.sty - A LaTeX package for creating customizable cheat sheets
+% Save this as cheatsheet.sty in your Overleaf project
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{cheatsheet}[2025/05/06 v1.0 Customizable Cheat Sheet Package]
+
+% Load required packages
+\RequirePackage{geometry}
+\RequirePackage{multicol}
+\RequirePackage{enumitem}
+\RequirePackage{xcolor}
+\RequirePackage{helvet}
+\RequirePackage{ifthen}
+
+% =============================================
+% CUSTOMIZABLE PARAMETERS
+% =============================================
+\newcommand{\numcols}{3}                     % Number of columns
+\newcommand{\basefontsize}{5}                % Base font size
+\newcommand{\baselineheight}{6}              % Baseline height
+\newcommand{\pagemargin}{0.15in}             % Page margin
+\newcommand{\colseparation}{0.12in}          % Column separation
+\newcommand{\colsepline}{0.3pt}              % Column separator line
+\newcommand{\sectionfontsize}{6.5}           % Section title font size
+\newcommand{\sectionlineheight}{7}           % Section title line height
+\newcommand{\subsectionfontsize}{6}          % Subsection title font size
+\newcommand{\subsectionlineheight}{6.5}      % Subsection title line height
+\newcommand{\itemleftmargin}{0.5em}          % Item left margin
+\newcommand{\interitemspace}{1pt}            % Space between items
+
+% Header information
+\newcommand{\studentname}{Your Name}         % Student name
+\newcommand{\classname}{Course Name}         % Class name
+\newcommand{\sheetdate}{\today}              % Date (default: today)
+\newcommand{\showheader}{true}               % Show/hide header (true/false)
+
+% User-friendly settings commands
+\newcommand{\setcheatsheetcolumns}[1]{\renewcommand{\numcols}{#1}}
+\newcommand{\setcheatsheetfontsize}[1]{\renewcommand{\basefontsize}{#1}}
+\newcommand{\setcheatsheetmargin}[1]{\renewcommand{\pagemargin}{#1}\geometry{margin=#1}}
+\newcommand{\setcheatsheetcolsep}[1]{\renewcommand{\colseparation}{#1}\setlength{\columnsep}{#1}}
+\newcommand{\setcheatsheetdensity}[1]{%
+  \renewcommand{\baselineheight}{#1}%
+  \renewcommand{\interitemspace}{#1}%
+}
+\newcommand{\setcheatsheetsecsize}[1]{\renewcommand{\sectionfontsize}{#1}}
+\newcommand{\setcheatsheetsubsecsize}[1]{\renewcommand{\subsectionfontsize}{#1}}
+\newcommand{\setcheatsheetheader}[3]{%
+  \renewcommand{\studentname}{#1}%
+  \renewcommand{\classname}{#2}%
+  \renewcommand{\sheetdate}{#3}%
+}
+\newcommand{\hidecheatsheetheader}{\renewcommand{\showheader}{false}}
+
+% Basic settings
+\geometry{margin=\pagemargin}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\linespread{0.9}
+\setlength{\columnsep}{\colseparation}
+\setlength{\columnseprule}{\colsepline}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Define pastel colors for sections
+\definecolor{color1}{rgb}{0.97,0.97,0.97} % Very light gray
+\definecolor{color2}{rgb}{0.97,0.95,0.95} % Very light pink
+\definecolor{color3}{rgb}{0.95,0.97,0.95} % Very light green
+\definecolor{color4}{rgb}{0.95,0.95,0.97} % Very light blue
+\definecolor{color5}{rgb}{0.97,0.97,0.95} % Very light yellow
+\definecolor{color6}{rgb}{0.95,0.97,0.97} % Very light cyan
+\definecolor{color7}{rgb}{0.97,0.95,0.97} % Very light magenta
+\definecolor{formulabg}{rgb}{1.0,0.98,0.9} % Very light cream
+
+% Compact lists
+\setlist[itemize]{nolistsep, leftmargin=\itemleftmargin, topsep=0pt, itemsep=\interitemspace, 
+                  labelindent=0em, labelsep=0.2em, parsep=0pt}
+
+% Section headers
+\newcounter{seccounter}
+\newcounter{subseccounter}[seccounter]
+
+% Get color based on section number (using modulo 7)
+\newcommand{\seccolor}{%
+  \ifcase\numexpr\value{seccounter} mod 7\relax
+    color7%
+  \or
+    color1%
+  \or
+    color2%
+  \or
+    color3%
+  \or
+    color4%
+  \or
+    color5%
+  \or
+    color6%
+  \fi
+}
+
+% Numbered section with color-matched title
+\newcommand{\nsection}[1]{%
+  \stepcounter{seccounter}%
+  \setcounter{subseccounter}{0}%
+  \vspace{2pt}\noindent%
+  \colorbox{\seccolor}{%
+    \begin{minipage}{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}%
+      \fontsize{\sectionfontsize}{\sectionlineheight}\selectfont\textbf{\theseccounter\hspace{0.75em}#1}%
+    \end{minipage}%
+  }%
+  \vspace{2pt}\par%
+}
+
+% Simple colored subsection - no environment needed
+\newcommand{\nsubsection}[2]{%
+  \stepcounter{subseccounter}%
+  \vspace{2pt}\noindent%
+  \colorbox{\seccolor}{%
+    \begin{minipage}{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}%
+      \fontsize{\subsectionfontsize}{\subsectionlineheight}\selectfont\textbf{\theseccounter.\thesubseccounter\hspace{0.5em}#1}\par%
+      \vspace{2pt}%
+      #2
+    \end{minipage}%
+  }%
+  \vspace{2pt}%
+}
+
+% Formula highlight
+\newcommand{\keyfm}[1]{%
+  \colorbox{formulabg}{$#1$}%
+}
+
+% Begin cheat sheet (call this after \begin{document})
+\newcommand{\begincheatsheet}{%
+  % Display header if enabled
+  \ifthenelse{\equal{\showheader}{true}}{%
+    \fontsize{\sectionfontsize}{\sectionlineheight}\selectfont
+    \noindent\textbf{\studentname} \hfill \textbf{\classname} \hfill \textbf{\sheetdate}
+    \vspace{0.05in}\hrule
+  }{}
+
+  \fontsize{\basefontsize}{\baselineheight}\selectfont
+  \pagestyle{empty}
+
+  \begin{multicols}{\numcols}
+}
+
+% End cheat sheet (call this before \end{document})
+\newcommand{\endcheatsheet}{%
+  \end{multicols}
+}
