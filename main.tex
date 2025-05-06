@@ -1,0 +1,45 @@
+% Example main.tex file where you would create your reference sheet
+
+\documentclass{article}
+
+% Load the cheatsheet package
+\usepackage{cheatsheet}
+
+% Customize your cheat sheet settings (optional)
+\setcheatsheetheader{Your Name}{Course Name}{May 6, 2025}
+\setcheatsheetcolumns{3}
+\setcheatsheetfontsize{5}
+% \setcheatsheetmargin{0.25in}    % Uncomment to change margin
+% \setcheatsheetdensity{1.5pt}    % Uncomment for less dense content
+
+\begin{document}
+
+% Start the cheat sheet
+\begincheatsheet
+
+% Add your content
+\nsection{Mathematics}
+
+\nsubsection{Calculus}{%
+Fundamental theorem: $\int_a^b f'(x)dx = f(b) - f(a)$.
+\begin{itemize}
+\item Derivatives: $\frac{d}{dx}(x^n) = nx^{n-1}$
+\item Integration by parts: $\int u dv = uv - \int v du$
+\item L'Hôpital's rule: \keyfm{\lim_{x \to a}\frac{f(x)}{g(x)} = \lim_{x \to a}\frac{f'(x)}{g'(x)}} when $\frac{0}{0}$
+\end{itemize}
+}
+
+\nsubsection{Linear Algebra}{%
+\begin{itemize}
+\item Determinant: $|A| = \sum_{j=1}^{n} a_{1j}C_{1j}$
+\item Eigenvalues: $Av = \lambda v$
+\item Orthogonal matrices: $A^TA = I$
+\end{itemize}
+}
+
+% Add more sections as needed...
+
+% End the cheat sheet
+\endcheatsheet
+
+\end{document}
