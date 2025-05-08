@@ -1,16 +1,18 @@
 % cheatsheet.sty - A LaTeX package for creating customizable cheat sheets
-% Save this as cheatsheet.sty in your Overleaf project
+% Modified version with improved font size handling
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{cheatsheet}[2025/05/06 v1.0 Customizable Cheat Sheet Package]
+\ProvidesPackage{cheatsheet}[2025/05/06 v1.1 Customizable Cheat Sheet Package]
 
 % Load required packages
 \RequirePackage{geometry}
 \RequirePackage{multicol}
 \RequirePackage{enumitem}
-\RequirePackage{xcolor}
-\RequirePackage{helvet}
+\RequirePackage[svgnames,table,dvipsnames]{xcolor} % Enhanced color support
 \RequirePackage{ifthen}
+\RequirePackage{amsmath}    % For \text command and math environments
+\RequirePackage{amssymb}    % For \mathbb symbols
+\RequirePackage{bm}         % For \bm command (bold math)
 
 % =============================================
 % CUSTOMIZABLE PARAMETERS
@@ -36,7 +38,14 @@
 
 % User-friendly settings commands
 \newcommand{\setcheatsheetcolumns}[1]{\renewcommand{\numcols}{#1}}
-\newcommand{\setcheatsheetfontsize}[1]{\renewcommand{\basefontsize}{#1}}
+\newcommand{\setcheatsheetfontsize}[1]{%
+  \renewcommand{\basefontsize}{#1}%
+  \renewcommand{\baselineheight}{\dimexpr#1*1.2\relax}% Auto-adjust baseline height
+  \renewcommand{\sectionfontsize}{\dimexpr#1*1.3\relax}% Auto-adjust section size
+  \renewcommand{\sectionlineheight}{\dimexpr#1*1.4\relax}%
+  \renewcommand{\subsectionfontsize}{\dimexpr#1*1.2\relax}% Auto-adjust subsection size
+  \renewcommand{\subsectionlineheight}{\dimexpr#1*1.3\relax}%
+}
 \newcommand{\setcheatsheetmargin}[1]{\renewcommand{\pagemargin}{#1}\geometry{margin=#1}}
 \newcommand{\setcheatsheetcolsep}[1]{\renewcommand{\colseparation}{#1}\setlength{\columnsep}{#1}}
 \newcommand{\setcheatsheetdensity}[1]{%
@@ -61,41 +70,40 @@
 \setlength{\columnseprule}{\colsepline}
 \renewcommand{\familydefault}{\sfdefault}
 
-% Define pastel colors for sections
-\definecolor{color1}{rgb}{0.97,0.97,0.97} % Very light gray
-\definecolor{color2}{rgb}{0.97,0.95,0.95} % Very light pink
-\definecolor{color3}{rgb}{0.95,0.97,0.95} % Very light green
-\definecolor{color4}{rgb}{0.95,0.95,0.97} % Very light blue
-\definecolor{color5}{rgb}{0.97,0.97,0.95} % Very light yellow
-\definecolor{color6}{rgb}{0.95,0.97,0.97} % Very light cyan
-\definecolor{color7}{rgb}{0.97,0.95,0.97} % Very light magenta
-\definecolor{formulabg}{rgb}{1.0,0.98,0.9} % Very light cream
+% Define section colors - using named colors for better compatibility
+\definecolor{sec1color}{RGB}{242, 242, 242}  % Light gray
+\definecolor{sec2color}{RGB}{242, 230, 230}  % Light pink
+\definecolor{sec3color}{RGB}{230, 242, 230}  % Light green
+\definecolor{sec4color}{RGB}{230, 230, 242}  % Light blue
+\definecolor{sec5color}{RGB}{242, 242, 217}  % Light yellow
+\definecolor{sec6color}{RGB}{230, 242, 242}  % Light cyan
+\definecolor{sec7color}{RGB}{242, 230, 242}  % Light magenta
+\definecolor{formulabg}{RGB}{255, 250, 230}  % Light cream for formulas
 
-% Compact lists
-\setlist[itemize]{nolistsep, leftmargin=\itemleftmargin, topsep=0pt, itemsep=\interitemspace, 
+% Compact lists with proper font size
+\newcommand{\setlistfontsize}{%
+  \setlist[itemize]{font=\fontsize{\basefontsize}{\baselineheight}\selectfont,
+                  nolistsep, leftmargin=\itemleftmargin, topsep=0pt, 
+                  itemsep=\interitemspace, labelindent=0em, labelsep=0.2em, parsep=0pt}
+  \setlist[enumerate]{font=\fontsize{\basefontsize}{\baselineheight}\selectfont,
+                  nolistsep, leftmargin=1.5em, topsep=0pt, itemsep=\interitemspace, 
                   labelindent=0em, labelsep=0.2em, parsep=0pt}
+}
+
+% Apply list settings initially
+\setlistfontsize
 
 % Section headers
 \newcounter{seccounter}
 \newcounter{subseccounter}[seccounter]
 
-% Get color based on section number (using modulo 7)
-\newcommand{\seccolor}{%
-  \ifcase\numexpr\value{seccounter} mod 7\relax
-    color7%
-  \or
-    color1%
-  \or
-    color2%
-  \or
-    color3%
-  \or
-    color4%
-  \or
-    color5%
-  \or
-    color6%
-  \fi
+% Simplified color selection function
+\newcommand{\getsectioncolor}{%
+  \ifcase\numexpr\value{seccounter} % We start from 0 because of how \ifcase works
+    sec1color\or sec1color\or sec2color\or sec3color\or sec4color\or sec5color\or 
+    sec6color\or sec7color\or sec1color\or sec2color\or sec3color\or sec4color\or 
+    sec5color\or sec6color\or sec7color\or sec1color\or sec2color\or sec3color\or 
+    sec4color\or sec5color\or sec6color\or sec7color\else sec1color\fi
 }
 
 % Numbered section with color-matched title
@@ -103,26 +111,29 @@
   \stepcounter{seccounter}%
   \setcounter{subseccounter}{0}%
   \vspace{2pt}\noindent%
-  \colorbox{\seccolor}{%
+  \colorbox{\getsectioncolor}{%
     \begin{minipage}{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}%
       \fontsize{\sectionfontsize}{\sectionlineheight}\selectfont\textbf{\theseccounter\hspace{0.75em}#1}%
     \end{minipage}%
   }%
   \vspace{2pt}\par%
+  \fontsize{\basefontsize}{\baselineheight}\selectfont% Reapply base font size after section
 }
 
 % Simple colored subsection - no environment needed
 \newcommand{\nsubsection}[2]{%
   \stepcounter{subseccounter}%
   \vspace{2pt}\noindent%
-  \colorbox{\seccolor}{%
+  \colorbox{\getsectioncolor}{%
     \begin{minipage}{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}%
       \fontsize{\subsectionfontsize}{\subsectionlineheight}\selectfont\textbf{\theseccounter.\thesubseccounter\hspace{0.5em}#1}\par%
       \vspace{2pt}%
+      \fontsize{\basefontsize}{\baselineheight}\selectfont% Apply font size to content
       #2
     \end{minipage}%
   }%
   \vspace{2pt}%
+  \fontsize{\basefontsize}{\baselineheight}\selectfont% Reapply after subsection
 }
 
 % Formula highlight
@@ -139,7 +150,9 @@
     \vspace{0.05in}\hrule
   }{}
 
+  % Apply selected font size globally
   \fontsize{\basefontsize}{\baselineheight}\selectfont
+  \setlistfontsize% Apply to lists
   \pagestyle{empty}
 
   \begin{multicols}{\numcols}
