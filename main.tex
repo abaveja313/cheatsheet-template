@@ -1,44 +1,667 @@
-% Example main.tex file where you would create your reference sheet
-
+% Linear Algebra Reference Sheet
 \documentclass{article}
 
-% Load the cheatsheet package
+% Load the cheatsheet package and necessary math packages
 \usepackage{cheatsheet}
+\usepackage{amsmath,amsfonts,amssymb,bm}
 
-% Customize your cheat sheet settings (optional)
-\setcheatsheetheader{Your Name}{Course Name}{May 6, 2025}
+% Custom macros for mathematical notation
+\newcommand{\vb}[1]{\mathbf{#1}} % Vector (bold)
+\newcommand{\mt}[1]{\mathit{#1}} % Matrix (italic)
+\newcommand{\RR}{\mathbb{R}} % Real numbers
+\newcommand{\vn}[1]{\left\|#1\right\|} % Magnitude/Norm
+\newcommand{\vs}[1]{\mathcal{#1}} % Vector space
+\newcommand{\proj}[2]{\text{Proj}_{#1}(#2)} % Projection of #2 onto #1
+\DeclareMathOperator{\tr}{tr} % Trace operator
+
+% Customize cheatsheet parameters
 \setcheatsheetcolumns{3}
-\setcheatsheetfontsize{5}
-% \setcheatsheetmargin{0.25in}    % Uncomment to change margin
-% \setcheatsheetdensity{1.5pt}    % Uncomment for less dense content
+\setcheatsheetfontsize{6.75}  % Larger font size for readability
+\setcheatsheetmargin{0.1in}
+\setcheatsheetdensity{0.05}
+\hidecheatsheetheader      % No header needed
 
 \begin{document}
 
-% Start the cheat sheet
+% Begin the cheat sheet
 \begincheatsheet
 
 % Add your content
-\nsection{Mathematics}
-
-\nsubsection{Calculus}{%
-Fundamental theorem: $\int_a^b f'(x)dx = f(b) - f(a)$.
+\nsection{Matrix \& Vector Operations}
+\nsubsection{Quickies}{
 \begin{itemize}
-\item Derivatives: $\frac{d}{dx}(x^n) = nx^{n-1}$
-\item Integration by parts: $\int u dv = uv - \int v du$
-\item L'Hôpital's rule: \keyfm{\lim_{x \to a}\frac{f(x)}{g(x)} = \lim_{x \to a}\frac{f'(x)}{g'(x)}} when $\frac{0}{0}$
+    \item Normalize vector $\vb{v}$ to length 1: $\vb{u} = \frac{\vb{v}}{\vn{\vb{v}}}$
+    \item Given matrix $\mt{A}$, $\tr(\mt{A}) = \sum_{i=1}^n{a_{ii}}$
+    \item If $\vb{x} \cdot \vb{y} = 0$, then $\vb{x}$ and $\vb{y}$ are orthogonal
+    \item $\mt{A}_{ij} = \mt{A}^T_{ji}$
+    \item $(\mt{A}^T)^T = \mt{A}$
+    \item $(\mt{A}+\mt{B})^T = \mt{A}^T + \mt{B}^T$
+    \item $(\mt{A}\mt{B})^T = \mt{B}^T\mt{A}^T$
+    \item Symmetric matrix: $\mt{A}=\mt{A}^T$, skew symmetric: $\mt{A}^T = -\mt{A}$ (diagonals all 0)
+    \item For any matrix $\mt{M}$, $\mt{M}^T\mt{M}$ and $\mt{M}\mt{M}^T$ are symmetric
+\end{itemize}
+}
+\nsubsection{Dot Products}{
+\begin{itemize}
+    \item Given two vectors $\vb{x}$ and $\vb{y}$, $\vb{x} \cdot \vb{y} = \vb{x}^T\vb{y} = x_1y_1+x_2y_2+... = \sum_{i=1}^n{x_iy_i}$
+    \item Given two non-zero n-vectors $\vb{x}$ and $\vb{y}$, and $l$ be the length of the shadow that $\vb{x}$ projects onto the ray containing $\vb{y}$, then $\vb{x}\cdot\vb{y}=l\vn{\vb{y}}$
+    \item Magnitude of vector: $\vn{\vb{v}} = \sqrt{v_1^2+v_2^2...} = \sqrt{\vb{v}\cdot \vb{v}}$
+    \item $\vb{v} \cdot \vb{v} = \vn{\vb{v}}^2$
+    \item Angle between \textbf{non-zero} $\vb{x}, \vb{y}$: $\cos(\theta)=\frac{\vb{x}\cdot\vb{y}}{\vn{\vb{x}}\vn{\vb{y}}}$
 \end{itemize}
 }
 
-\nsubsection{Linear Algebra}{%
+\nsubsection{Matrix Products}{
 \begin{itemize}
-\item Determinant: $|A| = \sum_{j=1}^{n} a_{1j}C_{1j}$
-\item Eigenvalues: $Av = \lambda v$
-\item Orthogonal matrices: $A^TA = I$
+\item Matrix-vector product: $\mt{A}\vb{x} = x_1 \vb{c_1} + x_2 \vb{c_2} + \cdots + x_n \vb{c_n}$ where $\vb{x} \in \RR^n$ and $\vb{c_i}$ are columns of $\mt{A}$
+\item For $\mt{A} \in \RR^{m \times n}$, $\mt{B} \in \RR^{n \times p}$, entries of $\mt{A}\mt{B}$ are dot products of rows of $\mt{A}$ with columns of $\mt{B}$
+    
+\item Writing $\mt{A} = [a_1^\top; a_2^\top; \ldots; a_m^\top]$ and $\mt{B} = [b_1, b_2, \ldots, b_p]$ 
+\item Then $\mt{A}\mt{B}$ has entries $(\mt{A}\mt{B})_{ij} = a_i \cdot b_j = \sum_{k=1}^n a_{ik}b_{kj}$
+    
+\item Matrix form: $\mt{A}\mt{B} = [\mt{A}b_1, \mt{A}b_2, \ldots, \mt{A}b_p]$
 \end{itemize}
 }
 
-% Add more sections as needed...
+\nsubsection{Special Matrices}{
+\begin{itemize}
+\item \textbf{Diagonal matrix}: A square matrix where all elements are zero except those on the main diagonal (from top-left to bottom-right)
 
+\item \textbf{Tridiagonal matrix}: A square matrix where all elements are zero except those on the main diagonal and the first diagonal immediately above and below it
+
+\item \textbf{Upper triangular matrix}: A square matrix where all elements below the main diagonal are zero
+
+\item \textbf{Lower triangular matrix}: A square matrix where all elements above the main diagonal are zero
+
+\item \textbf{Upper Hessenberg matrix}: A square matrix where all elements more than one position below the main diagonal are zero
+
+\item \textbf{Lower Hessenberg matrix}: A square matrix where all elements more than one position above the main diagonal are zero
+
+\item \textbf{Superdiagonal}: The diagonal immediately above the main diagonal
+
+\item \textbf{Subdiagonal}: The diagonal immediately below the main diagonal
+\end{itemize}
+}
+
+\nsubsection{Determinants}{
+\begin{itemize}
+\item Given 2x2 matrix $\mt{A}=[a\, b; c\, d]$, $\det(\mt{A}) = (ad-bc)$
+\item Interpreted as the distortion effect on the unit square when applying $T_{\mt{A}}$ to $\vb{e_1},\vb{e_2}$
+\item Finding determinant of NxN matrix (square)
+\begin{enumerate}
+    \item Label every cell in the matrix from left to right with alternating $+$ and $-$ signs. Let $S_{i,j}$ be $1$ if positive, else $-1$
+    \item Pick the row or column with most amount of $0$ elements
+    \item For each item $i,j$ in the row/column, the determinant of the matrix after eliminating row $i$ and col $j$
+    \item After doing so for each, calculate $S_{i,j} \cdot \mt{A}_{i,j} \cdot \det(\text{remaining})$
+    \item Sum them all
+\end{enumerate}
+\end{itemize}
+}
+
+\nsubsection{Inverses}{
+\begin{itemize}
+    \item Identity matrix: $1$s along diagonal, $0$s everywhere else
+    \item If $\mt{A}\mt{B} = \mt{I}_n$, $\mt{B} = \mt{A}^{-1}$ and $\mt{A} = \mt{B}^{-1}$, $\det(\mt{A}^{-1}) = \frac{1}{\det(\mt{A})}$
+    \item If $\mt{A}$ is invertible, $\mt{A}\vb{x} = \vb{b}$ has unique solution $\mt{A}^{-1}\vb{b}$
+    \item $\mt{A}$ is invertible $\iff$ $\mt{A}\vb{x}=\vb{0}$ has only trivial solution
+    \item $(\mt{A}\mt{B})^{-1} = \mt{B}^{-1}\mt{A}^{-1}$
+    \item Lower or upper triangular matrix with \textbf{all diagonals nonzero} $\implies \mt{A}$ is invertible
+    \item For an invertible matrix and nonzero scalar $c$, $(c\mt{A})^{-1}=\frac{1}{c}\mt{A}^{-1}$
+    \item $\mt{A}$ invertible $\implies$ $\mt{A}^T$ is invertible
+    \item $(\mt{A}^{-1})^T=(\mt{A}^T)^{-1}$
+    \item Rotation matrices are inverses of each other
+    \item 2x2 Matrix: $\frac{1}{ad - bc}\begin{bmatrix}d & -b\\-c & a\end{bmatrix}$
+    \item $\det(\mt{A}) \neq 0 \implies$ $\mt{A}$ is \textbf{invertible}
+    \item Inverse of a diagonal matrix: $\mt{D} = \begin{bmatrix}a_{11} & 0 \\ 0 & a_{22}\end{bmatrix} = \begin{bmatrix}1/a_{11} & 0 \\ 0 & 1/a_{22}\end{bmatrix}$
+    \item If $\mt{M}$ is lower triangular, so is $\mt{M}^{-1}$. Diagonal entries are reciprocals. Same holds for upper triangular
+\end{itemize}
+}
+
+\nsection{Vandermonde Matrices}
+\nsubsection{Definition}{
+\begin{itemize}
+\item $(n+1)\times(n+1)$ Vandermonde Matrix:
+$$\mt{V}_n = \begin{bmatrix}
+1 & x_0 & x_0^2 & \cdots & x_0^{n-1} \\
+1 & x_1 & x_1^2 & \cdots & x_1^{n-1} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & x_{n-1} & x_{n-1}^2 & \cdots & x_{n-1}^{n-1}
+\end{bmatrix}$$
+\item $\det(\mt{V}_{n+1}) = \prod_{0 \leq i < j \leq n}(x_j-x_i)$
+\item Example: $\det(\mt{V}_3) = (x_1-x_0)(x_2-x_0)(x_2-x_1)$
+\end{itemize}
+}
+\nsubsection{Interpolation}{
+\begin{itemize}
+\item Given $n+1$ data points with distinct $x_i$s, there exists a unique polynomial that interpolates those points, namely: $\vb{c} = \mt{V}^{-1}_{n+1}\vb{y}$
+\end{itemize}
+}
+
+\nsection{Orthogonal Matrices}
+\nsubsection{Definition}{
+Must satisfy \textbf{one of} the following (equiv.) conditions:
+\begin{enumerate}
+    \item $\mt{A}^T\mt{A}=\mt{A}\mt{A}^T=\mt{I}_n$
+    \item \textbf{columns} of $\mt{A}$ are \textbf{orthonormal}
+    \item \textbf{rows} of $\mt{A}$ are \textbf{orthonormal}
+    \item $T_{\mt{A}}:\RR^n\to \RR^n$ is angle preserving
+    \item $\vn{\mt{A}\vb{x}}=\vn{\vb{x}}$
+\end{enumerate}
+}
+\nsubsection{Properties}{
+\begin{itemize}
+    \item Inverse of orthogonal matrix is equal to its transpose: $\mt{A}^{-1}=\mt{A}^T$
+    \item if $\mt{A}$ and $\mt{B}$ are orthogonal, then so are $\mt{A}\mt{B}$ and $\mt{B}\mt{A}$
+\end{itemize}
+}
+
+\nsubsection{Householder Reflection}
+{
+\begin{itemize}
+    \item Linear transformation describing reflection about a plane containing the \textbf{origin} and \textbf{orthogonal} to a vector $\vb{u}$
+    \item $\mt{H} = \mt{I}_n - 2\vb{u}\vb{u}^T$
+    \item $\vb{u}(\vb{u}^T\vb{x})= \left(\frac{\vb{x}\cdot \vb{u}}{\vb{u} \cdot \vb{u}}\right)\vb{u} = \proj{\vb{u}}{\vb{x}}$
+    \item $\mt{H}^T = \mt{H}$
+    \item $\mt{H}^{-1} = \mt{H}$ (involutary matrix)
+\end{itemize}
+}
+
+\nsection{LU Decomposition}
+\nsubsection{Basics}{
+\begin{itemize}
+    \item Goal is to write $\mt{A}$ as the product of a \textbf{lower triangular} and \textbf{upper triangular} matrix
+    \item Can solve $\mt{A}\vb{x}=\vb{b}$ by first solving $\mt{L}\vb{y}=\vb{b}$ and then solving $\mt{U}\vb{x}=\vb{y}$
+    \item $\mt{A}$ is invertible when \textbf{diagonals} in \textbf{$\mt{L}$} and \textbf{$\mt{U}$} are non zero. Inverse is $\mt{U}^{-1}\mt{L}^{-1}$
+    \item $\det(\mt{A}) = \det(\mt{L})\det(\mt{U})$
+    \item Any matrix can be written as a sum of \textbf{rank 1} matrices
+\end{itemize}}
+
+\nsubsection{Algorithm}{
+\begin{itemize}
+\item \textbf{LU Decomposition Algorithm} (rank-1 approach):
+  \begin{itemize}
+  \item Let $\mt{A} \in \RR^{m \times n}$ that can be factored as $\mt{L}\mt{U}$
+  \item \textbf{Step 1:} Extract $\vb{c}_1$ (first column) and $\vb{r}_1$ (first row). Write:
+    \begin{itemize}
+    \item $\mt{A} = (\vb{c}_1/\alpha_1)\vb{r}_1 + \mt{B}_1$ where $\alpha_1$ is first entry of $\vb{c}_1$
+    \item $\mt{B}_1 = \mt{A} - (\vb{c}_1/\alpha_1)\vb{r}_1$
+    \end{itemize}
+  \item \textbf{Step 2:} Repeat with $\mt{B}_1$: Extract $\vb{c}_2$ and $\vb{r}_2$ from $\mt{B}_1$
+    \begin{itemize}
+    \item $\mt{B}_1 = (\vb{c}_2/\alpha_2)\vb{r}_2 + \mt{B}_2$ where $\alpha_2$ is second entry of $\vb{c}_2$
+    \item $\mt{A} = (\vb{c}_1/\alpha_1)\vb{r}_1 + (\vb{c}_2/\alpha_2)\vb{r}_2 + \mt{B}_2$
+    \end{itemize}
+  \item \textbf{Step 3:} Continue until $\mt{B}_k = \vb{0}$
+  \item \textbf{Result:} $\mt{A} = \sum_{i=1}^{k} (\vb{c}_i/\alpha_i)\vb{r}_i$ where $k = \text{rank}(\mt{A})$
+  \item \textbf{LU form:} $\mt{A} = \mt{L}\mt{U}$ where:
+    \begin{itemize}
+    \item $\mt{L} = [\vb{c}_1/\alpha_1|\vb{c}_2/\alpha_2|\cdots|\vb{c}_k/\alpha_k]$
+    \item $\mt{U} = [\vb{r}_1; \vb{r}_2; \cdots; \vb{r}_k]$
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+}
+
+\nsection{Vector Spaces}
+\nsubsection{Definition}{
+\begin{itemize}
+\item Has two binary operations: $\vs{V} \times \vs{V} \to \vs{V}$, and $\RR \times \vs{V} \to \vs{V}$ that satisfy:
+\begin{itemize}
+\item $\forall \vb{u},\vb{v},\vb{w} \in \vs{V}, \vb{u}+(\vb{v}+\vb{w}) = (\vb{u}+\vb{v})+\vb{w}$
+\item $\exists \vb{0} \in \vs{V} : \forall \vb{v} \in \vs{V}, \vb{v}+\vb{0} = \vb{v}$
+\item $\forall \vb{v} \in \vs{V}, \exists -\vb{v} \in \vs{V} : \vb{v}+(-\vb{v}) = \vb{0}$
+\item $\forall \vb{u},\vb{v} \in \vs{V}, \vb{u}+\vb{v} = \vb{v}+\vb{u}$
+\item $\forall \vb{v} \in \vs{V}, 1 \cdot \vb{v} = \vb{v}$
+\item $\forall a,b \in \RR, \vb{v} \in \vs{V}, (ab) \cdot \vb{v} = a \cdot (b \cdot \vb{v})$
+\item $\forall a \in \RR, \vb{u},\vb{v} \in \vs{V}, a \cdot (\vb{u}+\vb{v}) = a \cdot \vb{u} + a \cdot \vb{v}$
+\item $\forall a,b \in \RR, \vb{v} \in \vs{V}, (a+b) \cdot \vb{v} = a \cdot \vb{v} + b \cdot \vb{v}$
+\end{itemize}
+\end{itemize}
+}
+
+\nsubsection{Subspaces}{
+    \begin{itemize}
+        \item Vector space contained in another vector space with the same operations
+        \item Subset $\vs{U}$ is a subspace if: $\vb{0} \in \vs{U}$, $\vb{u},\vb{v} \in \vs{U} \implies \vb{u}+\vb{v} \in \vs{U}$, $c\in \RR, \vb{u} \in \vs{U} \implies c\vb{u} \in \vs{U}$
+        \item If $\vs{U_1}$ and $\vs{U_2}$ are subspaces of $\vs{V}$, then so is their intersection.
+        \item Union of two subspaces is only a subspace if one of the subspaces is contained in the other
+        \item If $\vs{U_1},\vs{U_2},\ldots,\vs{U_m}$ are subspaces of a vector space $\vs{V}$, then their sum $\vs{U_1}+\vs{U_2}+\cdots+\vs{U_m} = \{\vb{u}_1 + \vb{u}_2 + \cdots + \vb{u}_m \mid \vb{u}_i \in \vs{U_i}\}$ is also a subspace of $\vs{V}$ containing each $\vs{U_i}$
+    \end{itemize}
+}
+
+\nsubsection{Direct Sums}{
+\begin{itemize}
+\item A sum of subspaces $\vs{U_1} + \vs{U_2} + \cdots + \vs{U_m}$ is called a \textbf{direct sum} (denoted $\vs{U_1} \oplus \vs{U_2} \oplus \cdots \oplus \vs{U_m}$) if every element can be expressed \textit{uniquely} as $\vb{u}_1 + \vb{u}_2 + \cdots + \vb{u}_m$ where $\vb{u}_i \in \vs{U_i}$
+
+\item For two subspaces $\vs{U_1}$ and $\vs{U_2}$, their sum $\vs{U_1} + \vs{U_2}$ is a direct sum if and only if $\vs{U_1} \cap \vs{U_2} = \{\vb{0}\}$; this uniqueness condition ensures each vector has exactly one decomposition
+\end{itemize}
+}
+
+\nsubsection{Span}{
+\begin{enumerate}
+    \item Span of a set of vectors $\vb{v_1},...,\vb{v_n}$ is the set of \textbf{all linear combinations} of that set
+    \item Given a set of vectors $\vb{v_1}, ...,\vb{v_n} \in \vs{V} \text{ over } \RR, \vs{U} = \text{span}(\vb{v_1}, ..., \vb{v_n})$ is a \textbf{subspace} of $\vs{V}$
+    \item Vector space is finite-dimensional if there is a set of vectors that span $\vs{V}$
+\end{enumerate}
+}
+
+\nsection{Basis}
+\nsubsection{Linear Independence}{
+\begin{enumerate}
+    \item Collection of vectors in a vector space $\vs{V}$ over $\RR$ is \textbf{linearly independent} if the only way to express $\vb{0}$ as a linear combination of $\vb{v_1},...,\vb{v_n}$ is with $0$ coefficients
+    \item Vectors in a space are linearly independent $\iff \forall \vb{v}\in \vs{V} = \text{span}(\vb{v_1},...,\vb{v_n})$ can be uniquely written as $\vb{v} = a_1\vb{v_1}...+a_n\vb{v_n}$
+    \item Collection of vectors is linearly dependent if $\vb{0} = a_1\vb{v_1} + ... +a_n\vb{v_n}$ where there is at least some $a_i \neq 0$
+\end{enumerate}
+}
+
+\nsubsection{Basis}{
+\begin{itemize}
+    \item A basis for a vector space $\vs{V}$ is a linearly independent spanning set for $\vs{V}$
+    \item $\dim{\vs{V}}$ is the number of vectors in any basis of $\vs{V}$
+    \item Subspace $\vs{U} \subseteq \vs{V} \implies \dim(\vs{U}) \le \dim(\vs{V})$
+    \item Given two subspaces $\vs{U}, \vs{W}$, $\dim(\vs{U}+\vs{W})=\dim{\vs{U}}+\dim{\vs{W}}-\dim(\vs{U}\cap\vs{W})$
+    \item If $\vs{V}$ is finite dimensional and $\vs{U}$ is a subspace of $\vs{V}$. A complementary subspace $\vs{W}$ to $\vs{U}$ exists such that $\vs{V} = \vs{U} \oplus \vs{W}$
+\end{itemize}
+}
+
+\nsection{Linear Maps}
+\nsubsection{Definition}{
+$T: \vs{V}\to\vs{W}$ is linear if:
+\begin{enumerate}
+    \item $T(\vb{v_1}+\vb{v_2}) = T(\vb{v_1})+T(\vb{v_2})$ for all $\vb{v_1},\vb{v_2} \in \vs{V}$
+    \item $T(c\vb{v})=cT(\vb{v})$ for all $\vb{v} \in \vs{V}, c\in \RR$
+\end{enumerate}
+Can also check $\forall a_1,a_2\in \RR, \vb{v_1},\vb{v_2}\in\vs{V},\,T(a_1\vb{v_1}+a_2\vb{v_2})=a_1T(\vb{v_1})+a_2T(\vb{v_2})$
+}
+
+\nsubsection{Properties}{
+\begin{enumerate}
+    \item If $T: \vs{V} \to \vs{W}$ is a linear map between $\vs{V}, \vs{W}$, $T(\vb{0}_v) = \vb{0}_w$
+    \item Can be expressed as a matrix multiplication by $\mt{A}$, where $\mt{A}_j= T(\vb{e}_j)$... $T(\vb{v}) = \mt{A}(\vb{v})$
+    \item $(S \circ T)(\vb{u}) = S(T(\vb{u}))$, $S: \vs{V}\to\vs{W}$, $T: \vs{U} \to \vs{V}$, $S \circ T: \vs{U} \to \vs{W}$
+    \item $S \circ T$, if $S$ is represented by $\mt{A}$ and $T$ is represented by $\mt{B}$, is given by $\mt{A}\mt{B}$
+\end{enumerate}
+}
+
+\nsubsection{Change of Basis}{
+    \begin{itemize}
+        \item If $T: \vs{V} \to \vs{W}$ is a linear map, $\vb{v_1},...,\vb{v_n}$ is a basis of $\vs{V}$ and $\vb{w_1},...,\vb{w_m}$ is basis for $\vs{W}$, $T(\vb{v_j}) = b_{1j}\vb{w_1}+...+b_{mj}\vb{w_{m}}=\sum_{i=1}^m{b_{ij}\vb{w_i}}$
+        \begin{enumerate}
+            \item For each $\vb{v_i} \in \text{basis}(\vs{V})$, calculate $T(\vb{v_i})$
+            \item Express $T(\vb{v_i})$ as a linear combination of $\vb{w_i}$ basis vectors, solving for the coefficients $\vb{b}$. 
+            \item The $i$th column of $\mt{B}$ is $\vb{b_i}$
+        \end{enumerate}
+\item \textbf{Matrix of a Linear Map:} For $T : \vs{V} \to \vs{W}$, if $\mt{A} \in \RR^{m \times n}$ is the matrix w.r.t. standard bases $\{\vb{e}_i\}$, $\{\tilde{\vb{e}}_j\}$ and $\mt{B} \in \RR^{m \times n}$ is the matrix w.r.t. bases $\{\vb{v}_i\}$, $\{\vb{w}_j\}$, then $T(\vb{v}) = \mt{A}\vb{v} = \mt{W}\mt{B}\mt{V}^{-1}\vb{v}$ where $\mt{V} \in \RR^{n \times n}$ has $\vb{v}_j$ as columns, $\mt{W} \in \RR^{m \times m}$ has $\vb{w}_i$ as columns, giving $\mt{A} = \mt{W}\mt{B}\mt{V}^{-1}$ and $\mt{B} = \mt{W}^{-1}\mt{A}\mt{V}$.
+    \end{itemize}
+}
+
+\nsection{Functions}
+\nsubsection{Intro}{
+\begin{itemize}
+    \item Given 2 sets $\mathit{A, B}$, \textbf{function} $f: A\to B$ takes each element $a \in A$ and maps it to a \textbf{single element} $b = f(a) \in B$
+    \item \textbf{Domain}: A, \textbf{Codomain}: B
+    \item \textbf{Range}: $\vs{R}(T) = \{\vb{w} \in \vs{W}\,|\,T(\vb{v})=\vb{w} \text { for } \vb{v} \in \vs{V}\}$
+    \item Range is the same as \textbf{column space} of $T$
+    \item $T: \vs{V} \to \vs{W} \implies \mathcal{R}(T)=\text{span}(T(v_1)...)$
+\end{itemize}
+}
+
+\nsubsection{Injectivity}{
+\begin{itemize}
+    \item Different elements in A are mapped to different elements in B
+    \item $f(a_1)=f(a_2) \implies a_1 = a_2$
+\end{itemize}
+}
+
+\nsubsection{Surjective / Onto}{
+\begin{itemize}
+    \item If every distinct value of B has a distinct value of A that produces it
+    \item $f(A) = \{b \in B | b = f(a) \text{ for some } a \in A\}$ is all of the codomain of B
+    $\forall b \in B. \exists a \in A. f(a) = b$
+\item $T: \vs{V} \to \vs{W}$ is \textbf{surjective} $\iff R(T) = W$
+\end{itemize}
+
+}
+
+\nsubsection{Bijective}{
+    Both \textbf{injective} and \textbf{surjective}
+}
+
+\nsubsection{Null Space / Kernel}{
+\begin{itemize}
+    \item Vector space consisting of vectors $T$ maps to $0$
+    \item $\vs{N}(T) = \{\vb{v} \in \vs{V}\,|\,T(\vb{v})=\vb{0}\}$
+    \item $\vs{N}(T) = \{\vb{0}\} \iff T$ is injective
+\end{itemize}
+}
+
+\nsection{Fundamental Subspaces}
+\nsubsection{Orthogonal Complement}{
+\begin{itemize}
+    \item If $\vs{V}$ is a subspace or $\RR^n$, the \textbf{unique} orthogonal complement is:
+    $V^\perp =  \{\vb{w} \in \RR^n\,|\,\vb{w}\cdot\vb{v}=\vb{w^T v} = 0\text{ for all } \vb{v} \in \vs{V}\}$
+    \item if $\vs{V}, \vs{W}$ are subspaces of $\RR^n$
+    \begin{enumerate}
+        \item $\vs{V}^\perp$ is a subspace of $\RR^n$
+        \item $\vs{V} \oplus \vs{V^\perp} = \RR^n$
+        \item ${(\vs{V}^T)}^T = \vs{V}$
+        \item $\vs{V}\subseteq \vs{W} \implies \vs{W}^\perp \subseteq \vs{V}^\perp$
+        \item $(\vs{V} + \vs{W})^\perp = \vs{V}^\perp \cap \vs{W}^\perp$
+        \item $(\vs{V} \cap \vs{W})^\perp = \vs{V}^\perp + \vs{W}^\perp$
+    \end{enumerate}
+\end{itemize}
+}
+
+\nsubsection{Fundamental Subspaces}{
+\begin{itemize}
+  \item \textbf{Right null space:} $\mathcal{N}(A) = \{x \in \mathbb{R}^n \mid Ax = 0\}$
+  
+  \item \textbf{Left null space:} $\mathcal{N}(A^{\top}) = \{y \in \mathbb{R}^m \mid A^{\top}y = 0\}$
+  
+  \item \textbf{Column space:} $\mathcal{R}(A) = \{y \in \mathbb{R}^m \mid Ax = y \text{ for } x \in \mathbb{R}^n\} = \text{span}(c_1,\ldots,c_n)$
+  
+  \item \textbf{Row space:} $\mathcal{R}(A^{\top}) = \{x \in \mathbb{R}^n \mid A^{\top}y = x \text{ for } y \in \mathbb{R}^m\} = \text{span}(r_1,\ldots,r_m)$
+\end{itemize}
+}
+
+\nsubsection{Properties}{
+\begin{enumerate}
+    \item \textbf{null space} is the orthogonal complement of the \textbf{row space}
+    \item \textbf{column space} is the orthogonal complement of the \textbf{left null space}
+    \item $\vs{N}(A) \oplus \vs{R}(A^T) = \RR^n$
+    \item $\vs{R}(A) \oplus \vs{N}(A^T) = \RR^m$
+    \item Consider the $LU$ decomposition of $A$; that is, $A = LU$. Then $\mathcal{N}(A) = \mathcal{N}(U)$, $\mathcal{N}(A^{\top}) = \mathcal{N}(L^{\top})$, $\mathcal{R}(A) = \mathcal{R}(L)$, and $\mathcal{R}(A^{\top}) = \mathcal{R}(U^{\top})$.
+\end{enumerate}
+}
+
+\nsection{Rank-Nullity Theorem}
+\nsubsection{Definition}{
+\begin{itemize}
+\item $\dim{(\vs{V}} = \dim{\vs{N}(T))} + \dim{\mathcal{R}(T)}$
+\item Makes sense, linear map splits the input space into directions that go to zero (nullity) and directions that reach the output (rank).
+\item \textbf{nullity}: $\dim{\vs{N}(T)}$
+\item \textbf{column rank}: $\dim{\vs{R}(T)}$; number of linearly independent cols in A
+\item \textbf{row rank}: $\dim{\vs{R}(A^T)}$; number of linearly independent rows in A
+\end{itemize}
+}
+
+\nsubsection{Corollaries}{
+\begin{enumerate}
+    \item $\dim\vs{V} < \dim \vs{W} \implies T$ is not \textbf{surjective}.
+    \item $\dim \vs{V} > \dim \vs{W} \implies T$ is not injective
+    \item T is \textbf{bijective} $\implies \dim \vs{V} = \dim \vs{W}$
+    \item $T: \vs{N}(A)^\perp \to \vs{R}(A)$ is bijective (row space?)
+    \item column rank is equal to row rank
+    \item $\mt{A} \in \RR^{n \times n}$ is invertible when $\text{rank}(A) = n$ (\textbf{full rank)}
+\end{enumerate}
+}
+
+\nsubsection{More Properties}{
+For $A, B \in \mathbb{R}^{n \times n}$:
+  \begin{itemize}
+    \item $\mathcal{R}(AB) \subseteq \mathcal{R}(A)$
+    \item $\mathcal{R}((AB)^{\top}) \subseteq \mathcal{R}(B^{\top})$
+    \item $\mathcal{N}(B) \subseteq \mathcal{N}(AB)$
+    \item $\mathcal{N}(A) = \mathcal{N}(A^{\top}A)$
+    \item $\mathcal{R}(A^{\top}) = \mathcal{R}(A^{\top}A)$
+    \item $\operatorname{rank}(A+B) \leq \operatorname{rank}(A) + \operatorname{rank}(B)$
+    \item $\operatorname{nullity}(B) \leq \operatorname{nullity}(AB) \leq \operatorname{nullity}(A) + \operatorname{nullity}(B)$
+    \item $\operatorname{rank}(A) + \operatorname{rank}(B) - n \leq \operatorname{rank}(AB) \leq \min\{\operatorname{rank}(A), \operatorname{rank}(B)\}$
+    \item If $B$ invertible, then $\mathcal{N}(BA) = \mathcal{N}(A)$ and $\operatorname{rank}(AB) = \operatorname{rank}(BA) = \operatorname{rank}(A)$
+  \end{itemize}
+}
+
+
+\nsection{Solving Full Rank Linear System}
+\nsubsection{Background}{
+\begin{enumerate}
+    \item $\operatorname{rank} = m = n$
+    \item A is \textbf{full rank} and \textbf{square}
+    \item $\vs{N}(A) = \{0\}$
+    \item Any $b \in \RR^n$ lies in column space of A (intuitive as spans $\RR^n$)
+    \item A is invertible
+\end{enumerate}
+}
+
+\nsubsection{Solving}{
+\begin{itemize}
+    \item Given $\mt{A}\vb{x}=\vb{b} \implies \vb{x} = A^{-1}\vb{b}$
+    \item $\vb{b} = 0 \implies \vb{x} = 0$
+\end{itemize}
+}
+
+\nsection{Solving Wide Linear System}
+\nsubsection{Background}{
+\begin{enumerate}
+    \item $\operatorname{rank} = m < n$
+    \item A is a wide matrix (more cols than rows) $\implies \infty$ sols
+    \item Null space has infinite solutions ($n-m > 0$), as does $A\vb{x}=\vb{b}$
+\end{enumerate}
+}
+
+\nsubsection{Solving}{
+\begin{itemize}
+    \item Given $\mt{A}\vb{x}=\vb{b} \implies \vb{x} = A^{-R}\vb{b}$ (minimum norm solution)
+    \item $A^{-R} := A^T(AA^T)^{-1}$ \textbf{right inverse}
+    \item $\vb{b = 0} \implies A\vb{x} = \vb{0}$ has infintely many solutions, but \textbf{min norm} is $\vb{x} = \vb{0}$
+\end{itemize}
+}
+
+\nsection{Solving Over-constrained Linear System}
+\nsubsection{Background}{
+\begin{enumerate}
+    \item $\operatorname{rank} = n < m$
+    \item A is tall matrix 
+    \item $\dim \vs{N}(A) = \{0\}$
+    \item A has either one solution or \textbf{no solution} (in which case we find the least squares solution)
+    \item Project onto column space
+\end{enumerate}
+}
+
+\nsubsection{Solving}{
+    \begin{itemize}
+        \item $x = A^{-L}\vb{b}$, $A^{-L} = (A^TA)^{-1}A^T$
+        \item If $\vb{b} \in \mathcal{R}(A), A\vb{x} = \vb{b}$ has one solution, $A^{-L}\vb{b}$
+        \item Otherwise, least squares projection onto column space is $A^{-L}\vb{b}$
+    \end{itemize}
+}
+
+\nsection{Solving Rank Deficient Linear System}
+\nsubsection{Background}{
+\begin{enumerate}
+    \item $\operatorname{rank}(A) = r < \min\{m,n\}$
+    \item Both null spaces are non-trivial: $\dim(\mathcal{N}(A)) = n-r > 0$ and $\dim(\mathcal{N}(A^T)) = m-r > 0$
+    \item $A^TA$ and $AA^T$ are \textbf{not invertible}
+    \item System either has \textbf{no solution} or \textbf{infinitely many solutions}
+\end{enumerate}
+}
+\nsubsection{Solving}{
+\begin{itemize}
+    \item If $\vb{b} \in \mathcal{R}(A)$: $A\vb{x} = \vb{b}$ has infinitely many solutions with $(n-r)$-dimensional solution space
+    \item Minimum norm solution: $\vb{x} = A^+\vb{b}$ where $A^+$ is the Moore-Penrose pseudoinverse:
+    $A^+ := \lim_{\delta\to 0}(A^TA+\delta^2I_n)^{-1}A^T = \lim_{\delta\to 0}A^T(AA^T+\delta^2I_m)^{-1}$
+    \item Special case: For $\vb{b} = \vb{0}$, minimum norm solution is $\vb{x} = \vb{0}$
+    \item If $\vb{b} \notin \mathcal{R}(A)$: No exact solution exists, so find least squares solution of minimum norm $\hat{\vb{x}} = A^+\vb{b}$
+\end{itemize}
+}
+
+\nsection{Pseudoinverses}
+\nsubsection{Penrose Condition}{
+$A^+$ is a pseudoinverse of $A$ if and only if:
+\begin{itemize}
+    \item $AA^+A = A$
+    \item $A^+AA^+ = A^+$
+    \item $(AA^+)^{\top} = AA^+$
+    \item $(A^+A)^{\top} = A^+A$
+\end{itemize}
+}
+
+\nsubsection{Special Pseudoinverses}{
+    \begin{enumerate}
+        \item If $A$ is invertible, $A^+=A^{-1}$
+        \item If $AA^T$ is invertible, then $A^+ = A^{-R} = A^T(AA^T)^{-1}$
+        \item if $A^TA$ is invertible, then $A^+ = A^{-L} = (A^TA)^{-1}A^T$
+    \end{enumerate}
+}
+
+\nsubsection{Properties}{
+\begin{enumerate}
+    \item Every matrix has a unique pseudoinverse
+    \item $(A^+)^+ = A$
+    \item $(A^T)^+ = (A^+)^T$
+    \item $(A^TA)^+ = A^+(A^T)^+$
+    \item $(AA^T)^+ = (A^T)^+A^+$
+    \item $\vs{R}(A^+) = \vs{R}(A^T) = \vs{R}(A^+A) = \vs{R}(A^TA)$
+    \item $\vs{N}(A^+) = \vs{N}(A^T) = \vs{N}(AA^+)= \vs{N}(AA^T)$
+\end{enumerate}
+}
+
+\nsection{Projection}
+\nsubsection{Definition}{
+    \begin{itemize}
+        \item If $\vs{V} = \vs{U_1}\oplus\vs{U_2}$, every $\vb{x} \in \vs{V} = \vb{x_1} + \vb{x_2}$
+        \item Oblique projection of $\vb{x} \in \vs{V}$ onto $\vs{U_1}$ along $\vs{U_2}$ is $P_{\vs{U_1},\vs{U_2}}\vb{x}=\vb{x_1}$
+        \item $P_{\vs{U}_2,\vs{U}_1}\vb{x}=\vb{x_2}$
+        \item $P_{\vs{U_1},\vs{U_2}} + P_{\vs{U}_2,\vs{U}_1} = I$
+        \item Square matrix is projection matrix $\iff P^2 = P$
+        \item Square matrix is projection matrix $\iff I-P$ is projection matrix
+    \end{itemize}
+}
+
+\nsubsection{Orthogonal Projection}{
+    \begin{itemize}
+        \item If $\vs{U} = \operatorname{span}(\vb{u})$, for any $x \in \RR^n$, the closest point in $\vs{U}$ to $\vb{x}$ is: $\operatorname{Proj_{\vs{U}}}(x) = \left(\frac{\vb{x \cdot u}}{\vb{u \cdot u}}\right)\vb{u}$
+        \item $x - \operatorname{Proj_{\vs{U}}}(x)$ i orthogonal to every $u$
+        \item If $\vs{U}$ has orth basis $\{\vb{u_1},...\}$, $\operatorname{Proj_{\vs{U}}}(x) = \operatorname{Proj_{\vb{u_1}}}(x) + ... + \operatorname{Proj_{\vb{u_k}}}(x)$
+    \end{itemize}
+}
+
+\nsubsection{Orthogonal Projection Matrix}{
+\begin{itemize}
+    \item If $\vs{U}$ has orthonormal basis, orthogonal projection matrix is $\sum_{j=1}^k(\operatorname{Proj_{\vb{u_j}}}(x))$
+    \item Sum of outer products: $\sum_{j=1}^k{\vb{u_j}\vb{u_j}^T\vb{x}} = AA^T\vb{x}$
+    \item P is orthogonal projection matrix $\iff P^2 = P = P^T$
+    \item P is orthogonal projection matrix $\implies \forall \vb{x} \in \vs{V}. \,||P\vb{x}|| \le ||\vb{x}||$
+\end{itemize}
+}
+
+\nsubsection{Projections onto Fundamental Subspaces}{
+\begin{itemize}
+    \item \textbf{onto column space}: $P_{\vs{R}(A)} = AA^+$
+    \item \textbf{onto left null space}: $P_{\vs{N}(A^T)}=I_m - AA^T$
+    \item \textbf{onto row space}: $P_{\vs{R}(A^T)}=A^+A$
+    \item \textbf{onto null space}: $P_{\vs{N}(A)}=I_n-A^+A$
+\end{itemize}
+}
+
+\nsubsection{Linear Regression}{
+\begin{itemize}
+    \item A is design matrix with $[x_1\,\,1; x_2\,\, 1...]$
+    \item $x = [m \,\, b]^T$
+    \item To get actual fitted values: $p = \operatorname{Proj_{\vs{R}(A)}}(\vb{Y})$
+    \item to get coefs: $\hat{x} = A^+\vb{y} = (A^TA)^{-1}A^T\vb{Y}$
+    \item $\vb{e = Y - p}$
+\end{itemize}
+}
+
+\nsection{Gram--Schmidt Process}
+\nsubsection{Definition}{
+For non-zero vectors $\mathbf v_1,\dots,\mathbf v_k$ spanning a subspace
+$\mathcal V$ (write $\mathcal V_i=\operatorname{span}(\mathbf v_1,\dots,\mathbf v_i)$):
+
+\begin{enumerate}
+  \item \textbf{Initial step.}\; $\mathbf w_1=\mathbf v_1$.
+  \item \textbf{Induction ($i=2,\dots,k$).}\;
+        $
+          \mathbf w_i
+            =\mathbf v_i-\sum_{j<i}\frac{\mathbf v_i^{\!\top}\mathbf w_j}{\lVert\mathbf w_j\rVert^{2}}\,
+                                   \mathbf w_j .
+        $
+\end{enumerate}
+
+The $\{\mathbf w_i\}$ form an \emph{orthogonal} basis of $\mathcal V$.
+Any non-zero scalar multiple $c\mathbf w_i$ may replace $\mathbf w_i$.
+}
+\nsubsection{Orthonormalization}{
+Two standard styles:
+\begin{itemize}
+  \item \emph{Normalise as you go:}\; after each $\mathbf w_i$ set
+        $\mathbf u_i=\mathbf w_i/\lVert\mathbf w_i\rVert$ and use the
+        $\mathbf u_j$ in later projections.
+  \item \emph{Normalise at the end:}\; first finish all $\mathbf w_i$, then
+        $\mathbf u_i=\mathbf w_i/\lVert\mathbf w_i\rVert$.
+        In this “all-at-once” variant you can immediately read off the
+        QR-decomposition of
+        $A=[\,\mathbf v_1\;\dots\;\mathbf v_k\,]$:
+
+        $
+          Q=[\,\mathbf u_1\;\dots\;\mathbf u_k\,],\qquad$\\
+          $
+          R=[r_{ij}]_{1\le i\le j\le k},\quad
+          \begin{cases}
+            r_{ii}=\lVert\mathbf w_i\rVert,\\
+            r_{ij}=\mathbf u_i^{\!\top}\mathbf v_j
+                  =\dfrac{\mathbf w_i^{\!\top}\mathbf v_j}{r_{ii}}, & j>i.
+          \end{cases}
+        $ (make sure to divide scaling constants)
+        Equivalently, $R=Q^{\!\top}A$ is upper-triangular with the
+        diagonal entries $r_{ii}$ already computed during normalisation.
+\end{itemize}
+}
+
+\nsection{QR Decomposition}
+\nsubsection{Definition}{
+\begin{itemize}
+    \item Writing matrix as a multiplication of \textbf{orthogonal} matrix $Q$ and an \textbf{upper triangular} matrix R with \textbf{positive diagonal} entries
+    \item Solving system: \textbf{solve} $Q\vb{y}=\vb{b}$, then solve $R\vb{x}=\vb{y}$
+    \item If diagonal entries of $R$ are nonzero, $A^{-1} - R^{-1}Q^{-1} = R^{-1}Q^{-1}$
+\end{itemize}
+}
+
+\nsubsection{Process}{
+\begin{enumerate}
+    \item Use \textbf{Graham-Schmidt} to build an orthonormal basis of $\vs{R}(A)$
+    \item Express the columns $\vb{v}_i$ of $A$ as linear combinations of the orthonormal basis
+\item The matrices $Q$ and $R$ are given by
+$$
+Q = \begin{bmatrix} 
+| & & | \\
+\widetilde{\mathbf{w}}_1 & \ldots & \widetilde{\mathbf{w}}_n \\
+| & & |
+\end{bmatrix},$$ 
+$$
+R = \begin{bmatrix}
+r_{11} & r_{12} & \ldots & r_{1n} \\
+0 & r_{22} & \ldots & r_{2n} \\
+\vdots & \ddots & \ddots & \vdots \\
+0 & \ldots & 0 & r_{nn}
+\end{bmatrix},
+$$
+
+where the $j$th column of $R$ consists of the coefficients $r_{1j},\ldots,r_{jj}$ that appear in the expression for $\mathbf{v}_j$ as a linear combination of $\widetilde{\mathbf{w}}_1,\ldots,\widetilde{\mathbf{w}}_j$.
+\end{enumerate}
+}
+
+\nsubsection{Gram--Schmidt and Thin QR}{%
+Given $A \in \mathbb{R}^{m \times n}$ with $m \ge n$, apply Gram--Schmidt to columns of $A$ to get:
+
+\[
+A = Q_1 R_1
+\]
+where:
+\begin{itemize}
+  \item $Q_1 \in \mathbb{R}^{m \times n}$ has orthonormal columns
+  \item $R_1 \in \mathbb{R}^{n \times n}$ is upper triangular
+\end{itemize}
+
+\textbf{Solving Least Squares:} $\min_{\mathbf{x}} \|A\mathbf{x} - \mathbf{b}\|_2$
+
+\[
+\Rightarrow \quad R_1 \mathbf{x} = Q_1^\top \mathbf{b}
+\]
+
+Solve via back substitution.
+}
 % End the cheat sheet
 \endcheatsheet
 
